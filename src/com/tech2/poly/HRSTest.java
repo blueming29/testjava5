@@ -10,6 +10,7 @@ abstract class Employee {
 }
 
 class Salesman extends Employee {
+	int annual_sales;
 	public void calcSalary() {
 		System.out.println("Salesman 급여 = 기본급 + 판매 수당");
 	}
@@ -20,6 +21,7 @@ class Salesman extends Employee {
 }
 
 class Consultant extends Employee {
+	int num_project;
 	public void calcSalary() {
 		System.out.println("Consultant 급여 = 기본급 + 컨설팅 특별 수당");
 	}
@@ -29,11 +31,17 @@ class Consultant extends Employee {
 	}
 }
 
-abstract class Manager extends Employee {
+class Manager extends Employee {
+	int num_team;
 	public void calcSalary() {
 		System.out.println("Manager 급여 = 기본급 + 팀 성과 수당");
 	}
 	// calcBonus는 자동으로 default
+	@Override
+	public void calcBonus() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 class Director extends Manager {
@@ -45,27 +53,36 @@ class Director extends Manager {
 public class HRSTest {
 	public static void calcTax(Employee e) { // Employee 라는 부모 클래스를 받아 오면서 다형성 적용 가능
 		// System.out.println("소득세를 계산합니다.");
-		System.out.println("Salesman 비교 : " + (e instanceof Salesman));
+//		System.out.println("Salesman 비교 : " + (e instanceof Salesman));
 		if (e instanceof Salesman) {
-			System.out.println("Salesman 입니다.");
+			Salesman s = (Salesman) e;
+			s.annual_sales = 6500000;
+			System.out.println("Salesman 입니다. "+s.annual_sales);
 		} else if (e instanceof Manager) {
-			System.out.println("Manager 입니다.");
+			Manager m = (Manager) e;
+			m.num_team = 5;
+			System.out.println("Manager 입니다. "+m.num_team);
 		} else if (e instanceof Consultant) {
-			System.out.println("Consultant 입니다.");
+			Consultant c = (Consultant) e;
+			c.num_project = 35;
+			System.out.println("Consultant 입니다. " + c.num_project);
+		} else {
+			System.out.println("Employee 입니다.");
 		}
 
 	}
 
 	public static void main(String[] args) {
 		Salesman s = new Salesman();
+		Manager m = new Manager();
 		Consultant c = new Consultant();
-		Director d = new Director();
+//		Director d = new Director();
 
-		Object[] arr = new Object[3];
+//		Object[] arr = new Object[3];
 
-		arr[0] = s;
-		arr[1] = c;
-		arr[2] = d;
+//		arr[0] = s;
+//		arr[1] = c;
+//		arr[2] = d;
 
 		// calcTax(arr[0]);
 		// calcTax(arr[1]);
@@ -74,11 +91,11 @@ public class HRSTest {
 //			calcTax((Employee) object);
 //		}
 		
-		calcTax(d);
+//		calcTax(d);
 
-		for (int i = 0; i < arr.length; i++) {
-			System.out.println(arr[i]);
-		}
+//		for (int i = 0; i < arr.length; i++) {
+//			System.out.println(arr[i]);
+//		}
 
 		// s.calcSalary();
 		// s.calcBonus();
@@ -99,6 +116,10 @@ public class HRSTest {
 		//
 		// Salesman s2 = s;
 		// System.out.println(s2.toString());
+		
+		calcTax(s);
+		calcTax(m);
+		calcTax(c);
 
 	}
 }
